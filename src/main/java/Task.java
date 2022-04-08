@@ -1,6 +1,18 @@
+import java.util.Scanner;
+
+import static java.lang.System.exit;
+
 public class Task {
     private String description;
     private Boolean state;
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "description='" + description + '\'' +
+                ", state=" + state +
+                '}';
+    }
 
     public Task(String description) {
         this.description = description;
@@ -8,6 +20,7 @@ public class Task {
     }
 
     public Task() {
+        state = false;
     }
 
     public String getDescription() {
@@ -27,14 +40,21 @@ public class Task {
     }
 
     public void add() {
+        state = false;
+        Scanner in = new Scanner(System.in);
+        System.out.println("Опишите задaчу: ");
+        description = in.nextLine();
     }
 
     public void print () {
+        System.out.println(((state == true) ? "-" : "x") + " " + description);
     }
 
     public void toggle () {
+        state = !state;
     }
 
     public void quit () {
+        exit(0);
     }
 }
