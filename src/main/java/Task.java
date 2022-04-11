@@ -1,4 +1,3 @@
-import java.util.Scanner;
 
 import static java.lang.System.exit;
 
@@ -39,11 +38,9 @@ public class Task {
         this.state = state;
     }
 
-    public void add() {
+    public void add(String descriptionTask) {
         state = false;
-        Scanner in = new Scanner(System.in);
-        System.out.println("Опишите задaчу: ");
-        description = in.nextLine();
+        description = descriptionTask;
     }
 
     public void print () {
