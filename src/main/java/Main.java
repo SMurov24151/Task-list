@@ -13,7 +13,10 @@ public class Main {
             String action = in.nextLine();
                 switch (action) {
                     case ("add"):
-                        task.add();
+                        Scanner in1 = new Scanner(System.in);
+                        System.out.println("Опишите задaчу: ");
+                        String descriptionTask = in.nextLine();
+                        task.add(descriptionTask);
                         break;
                     case ("print"):
                         task.print();
