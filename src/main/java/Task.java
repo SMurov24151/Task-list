@@ -1,9 +1,7 @@
-
-import static java.lang.System.exit;
-
 public class Task {
     private String description;
-    private Boolean state;
+    public Boolean state;
+    public int id;
 
     @Override
     public String toString() {
@@ -13,7 +11,8 @@ public class Task {
                 '}';
     }
 
-    public Task(String description) {
+    public Task(String description, int id) {
+        this.id = id;
         this.description = description;
         this.state = false;
     }
@@ -38,20 +37,15 @@ public class Task {
         this.state = state;
     }
 
-    public void add(String descriptionTask) {
-        state = false;
-        description = descriptionTask;
+    public int getId() {
+        return id;
     }
 
-    public void print () {
-        System.out.println(((state == true) ? "-" : "x") + " " + description);
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void toggle () {
-        state = !state;
-    }
-
-    public void quit () {
-        exit(0);
+    public void print() {
+        System.out.println(id + ". " + ((state == true) ? "- " : "x ") + description);
     }
 }
