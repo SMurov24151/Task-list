@@ -63,6 +63,10 @@ public class Main {
 
     public static void searchTask(Scanner in) {
         String substring = in.nextLine().trim();
+        if (substring.length() == 0) {
+            System.out.println("Введите слово");
+            return;
+        }
         for (Task task : listTask) {
             if (task.getDescription().contains(substring))
                 task.print();
@@ -70,48 +74,36 @@ public class Main {
     }
 
     public static void deleteTask(Scanner in) {
-        try {
-            int deleteIndex = Integer.parseInt(in.nextLine().trim());
-            Task taskForDelete = listTask.stream()
-                    .filter(el -> el.getId() == deleteIndex)
-                    .findAny()
-                    .orElse(null);
-            listTask.remove(taskForDelete);
-        } catch (NumberFormatException numberFormatException) {
-            System.out.println("Некоректный аргумент");
-        }
+        int id = findElement(in);
+        if (id >= 0) listTask.remove(id);
     }
 
     public static void toggleTask(Scanner in) {
-        try {
-            int statusСhange = Integer.parseInt(in.nextLine().trim());
-            for (Task task : listTask) {
-                if (task.getId() == statusСhange) {
-                    task.setState(!task.getState());
-                    return;
-                }
-            }
-        } catch (NumberFormatException numberFormatException) {
-            System.out.println("Некоректный аргумент");
-        }
+        int id = findElement(in);
+        if (id >= 0) listTask.get(id).setState(!listTask.get(id).getState());
     }
 
     public static void editTask(Scanner in) {
-        try {
-            int idTask = Integer.parseInt(in.next().trim());
-            String descriptionTask = in.nextLine().trim();
-            for (Task task : listTask) {
-                if (task.getId() == idTask) {
-                    task.setDescription(descriptionTask);
-                    return;
-                }
-            }
-        } catch (NumberFormatException numberFormatException) {
-            System.out.println("Некоректный аргумент");
-        }
+        int id = findElement(in);
+        String descriptionTask = in.nextLine().trim();
+        if (id >= 0) listTask.get(id).setDescription(descriptionTask);
     }
 
     public static void quitTask(Scanner in) {
         exit(0);
+    }
+
+    public static int findElement(Scanner in) {
+        try {
+            int idTask = Integer.parseInt(in.next().trim());
+            for (int i = 0; i < listTask.size(); i++) {
+                if (listTask.get(i).getId() == idTask) {
+                    return i;
+                }
+            }
+        } catch (NumberFormatException numberFormatException) {
+            System.out.println("Некоректный аргумент");
+        }
+        return -1;
     }
 }
