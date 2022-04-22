@@ -1,13 +1,17 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static java.lang.System.exit;
 
 public class Main {
     static ArrayList<Task> listTask = new ArrayList<Task>();
     static int nextIndexTask = 1;
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
+        logger.info("Simple log statement");
         while (true) {
             Scanner in = new Scanner(System.in);
             String action = in.next();
@@ -103,6 +107,7 @@ public class Main {
             }
         } catch (NumberFormatException numberFormatException) {
             System.out.println("Некоректный аргумент");
+            logger.error("Error parse input index " + numberFormatException.getMessage());;
         }
         return -1;
     }
