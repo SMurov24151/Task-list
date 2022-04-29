@@ -51,6 +51,6 @@ public class Task {
 
     public void print() {
         System.out.println(id + ". " + ((state == true) ? "- " : "x ") + description);
-        logger.debug("task.print for task with id " + id);
+        logger.debug("task.print for task with id {}", id);
     }
 }

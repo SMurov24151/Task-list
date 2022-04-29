@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,28 +15,30 @@ public class Main {
         logger.info("Simple log statement");
         while (true) {
             Scanner in = new Scanner(System.in);
-            String action = in.next();
+            String input = in.nextLine();
+            logger.debug(input);
+            String[] arrString = input.split(" ", 2);
+            String action = arrString[0];
             switch (action) {
                 case ("add"):
-                    addTask(in);
+                    addTask(arrString[1]);
                     break;
                 case ("print"):
-                    printTask(in);
+                    printTask(arrString[1]);
                     break;
                 case ("toggle"):
-                    toggleTask(in);
+                    toggleTask(arrString[1]);
                     break;
                 case ("quit"):
-                    quitTask(in);
-                    break;
+                    exit(0);
                 case ("delete"):
-                    deleteTask(in);
+                    deleteTask(arrString[1]);
                     break;
                 case ("edit"):
-                    editTask(in);
+                    editTask(arrString[1]);
                     break;
                 case ("search"):
-                    searchTask(in);
+                    searchTask(arrString[1]);
                     break;
                 default:
                     System.out.println("Введенная команда не поддерживается\n");
@@ -43,8 +46,7 @@ public class Main {
         }
     }
 
-    public static void addTask(Scanner in) {
-        String description = in.nextLine().trim();
+    public static void addTask(String description) {
         if (description.length() == 0) {
             System.out.println("Необходимо ввести описание задачи");
             return;
@@ -53,8 +55,7 @@ public class Main {
         nextIndexTask++;
     }
 
-    public static void printTask(Scanner in) {
-        String signAll = in.nextLine().trim();
+    public static void printTask(String signAll) {
         if (signAll.equals("all")) {
             for (Task task : listTask) {
                 task.print();
@@ -65,8 +66,8 @@ public class Main {
             }
     }
 
-    public static void searchTask(Scanner in) {
-        String substring = in.nextLine().trim();
+    public static void searchTask(String in) {
+        String substring = in;
         if (substring.length() == 0) {
             System.out.println("Введите слово");
             return;
@@ -77,29 +78,26 @@ public class Main {
         }
     }
 
-    public static void deleteTask(Scanner in) {
+    public static void deleteTask(String in) {
         int id = findElement(in);
         if (id >= 0) listTask.remove(id);
     }
 
-    public static void toggleTask(Scanner in) {
+    public static void toggleTask(String in) {
         int id = findElement(in);
         if (id >= 0) listTask.get(id).setState(!listTask.get(id).getState());
     }
 
-    public static void editTask(Scanner in) {
-        int id = findElement(in);
-        String descriptionTask = in.nextLine().trim();
+    public static void editTask(String in) {
+        String[] arrString = in.split(" ", 2);
+        int id = findElement(arrString[0]);
+        String descriptionTask = arrString[1];
         if (id >= 0) listTask.get(id).setDescription(descriptionTask);
     }
 
-    public static void quitTask(Scanner in) {
-        exit(0);
-    }
-
-    public static int findElement(Scanner in) {
+    public static int findElement(String in) {
         try {
-            int idTask = Integer.parseInt(in.next().trim());
+            int idTask = Integer.parseInt(in);
             for (int i = 0; i < listTask.size(); i++) {
                 if (listTask.get(i).getId() == idTask) {
                     return i;
@@ -107,7 +105,7 @@ public class Main {
             }
         } catch (NumberFormatException numberFormatException) {
             System.out.println("Некоректный аргумент");
-            logger.error("Error parse input index " + numberFormatException.getMessage());;
+            logger.error("Error parse input index {}", numberFormatException.getMessage());
         }
         return -1;
     }
