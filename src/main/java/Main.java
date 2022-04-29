@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ public class Main {
     static ArrayList<Task> listTask = new ArrayList<Task>();
     static int nextIndexTask = 1;
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    private static List<String> ACTION_WITH_REQUIRED_ARG = List.of("add", "toggle", "delete", "edit", "search");
 
     public static void main(String[] args) {
         logger.info("Simple log statement");
@@ -19,12 +21,17 @@ public class Main {
             logger.debug(input);
             String[] arrString = input.split(" ", 2);
             String action = arrString[0];
+            if (ACTION_WITH_REQUIRED_ARG.contains(action) && arrString.length<2) {
+                System.out.println("Недостаточно аргументов");
+                logger.error("Undefined args");
+                continue;
+            }
             switch (action) {
                 case ("add"):
                     addTask(arrString[1]);
                     break;
                 case ("print"):
-                    printTask(arrString[1]);
+                    printTask(arrString);
                     break;
                 case ("toggle"):
                     toggleTask(arrString[1]);
@@ -55,15 +62,20 @@ public class Main {
         nextIndexTask++;
     }
 
-    public static void printTask(String signAll) {
-        if (signAll.equals("all")) {
-            for (Task task : listTask) {
-                task.print();
-            }
-        } else
+    public static void printTask(String[] in) {
+        if (in.length<2){
             for (Task task : listTask) {
                 if (!task.getState()) task.print();
             }
+        } else if (in[1].equals("all")) {
+            for (Task task : listTask) {
+                task.print();
+            }
+        } else {
+            logger.error("Error in input for action print");
+            System.out.println("Некорректный ввод");
+        }
+
     }
 
     public static void searchTask(String in) {
