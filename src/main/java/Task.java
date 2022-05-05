@@ -1,7 +1,11 @@
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Task {
     private String description;
     public Boolean state;
     public int id;
+    private static final Logger logger = LoggerFactory.getLogger(Task.class);
 
     @Override
     public String toString() {
@@ -47,5 +51,6 @@ public class Task {
 
     public void print() {
         System.out.println(id + ". " + ((state == true) ? "- " : "x ") + description);
+        logger.debug("task.print for task with id {}", id);
     }
 }
