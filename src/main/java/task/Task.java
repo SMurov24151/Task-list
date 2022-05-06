@@ -1,3 +1,5 @@
+package task;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,7 +11,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "task.Task{" +
                 "description='" + description + '\'' +
                 ", state=" + state +
                 '}';

@@ -1,3 +1,5 @@
+package task;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,12 +17,7 @@ public class TaskList {
         }
         return INSTANCE;
     }
-
     public List<Task> getTasks() {
         return tasks;
-    }
-
-    public static TaskList getINSTANCE() {
-        return INSTANCE;
     }
 }
