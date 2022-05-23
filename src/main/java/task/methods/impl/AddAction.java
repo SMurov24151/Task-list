@@ -1,10 +1,12 @@
 package task.methods.impl;
 
+import org.springframework.stereotype.Service;
 import task.Main;
 import task.Task;
 import task.TaskList;
 import task.methods.ActionTaskStrategy;
 
+@Service
 public class AddAction implements ActionTaskStrategy {
 
     @Override

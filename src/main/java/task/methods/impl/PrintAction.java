@@ -2,10 +2,12 @@ package task.methods.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import task.Task;
 import task.TaskList;
 import task.methods.ActionTaskStrategy;
 
+@Service
 public class PrintAction implements ActionTaskStrategy {
 
     private static final Logger logger = LoggerFactory.getLogger(PrintAction.class);

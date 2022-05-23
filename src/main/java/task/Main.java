@@ -1,22 +1,44 @@
 package task;
 
-import java.util.List;
-import java.util.Scanner;
-
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import task.methods.ActionExecutor;
 import task.methods.impl.*;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.List;
+import java.util.Scanner;
+
 import static java.lang.System.exit;
 
-public class Main {
+@SpringBootApplication
+@RequiredArgsConstructor
+public class Main implements CommandLineRunner {
     static TaskList taskList = TaskList.getInstance();
     public static int nextIndexTask = 1;
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
     private static List<String> ACTION_WITH_REQUIRED_ARG = List.of("add", "toggle", "delete", "edit", "search");
 
+
     public static void main(String[] args) {
+        SpringApplication.run(Main.class, args);
+    }
+
+    private final AddAction addAction;
+    private final DeleteAction deleteAction;
+    private final EditAction editAction;
+    private final PrintAction printAction;
+    private final SearchAction searchAction;
+    private final ToggleAction toggleAction;
+
+    @Override
+    public void run(String... args) {
+        new BufferedReader(new InputStreamReader(System.in));
         logger.info("Simple log statement");
         ActionExecutor executor = new ActionExecutor();
         while (true) {
@@ -25,36 +47,36 @@ public class Main {
             logger.debug(input);
             String[] arrString = input.split(" ", 2);
             String action = arrString[0];
-            if (ACTION_WITH_REQUIRED_ARG.contains(action) && arrString.length<2) {
+            if (ACTION_WITH_REQUIRED_ARG.contains(action) && arrString.length < 2) {
                 System.out.println("Недостаточно аргументов");
                 logger.error("Undefined args");
                 continue;
             }
             switch (action) {
                 case ("add"):
-                    executor.setNewAction(new AddAction(), taskList, arrString[1]);
+                    executor.setNewAction(addAction, taskList, arrString[1]);
                     executor.runTask();
                     break;
                 case ("print"):
-                    executor.setNewAction(new PrintAction(), taskList, input);
+                    executor.setNewAction(printAction, taskList, input);
                     executor.runTask();
                     break;
                 case ("toggle"):
-                    executor.setNewAction(new ToggleAction(), taskList, arrString[1]);
+                    executor.setNewAction(toggleAction, taskList, arrString[1]);
                     executor.runTask();
                     break;
                 case ("quit"):
                     exit(0);
                 case ("delete"):
-                    executor.setNewAction(new DeleteAction(), taskList, arrString[1]);
+                    executor.setNewAction(deleteAction, taskList, arrString[1]);
                     executor.runTask();
                     break;
                 case ("edit"):
-                    executor.setNewAction(new EditAction(), taskList, arrString[1]);
+                    executor.setNewAction(editAction, taskList, arrString[1]);
                     executor.runTask();
                     break;
                 case ("search"):
-                    executor.setNewAction(new SearchAction(), taskList, arrString[1]);
+                    executor.setNewAction(searchAction, taskList, arrString[1]);
                     executor.runTask();
                     break;
                 default:
