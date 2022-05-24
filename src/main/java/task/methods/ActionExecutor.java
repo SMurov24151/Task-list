@@ -7,7 +7,10 @@ public class ActionExecutor {
     private String in;
     private ActionTaskStrategy strategy;
 
-    public ActionExecutor() {
+    public ActionExecutor(ActionTaskStrategy strategy, TaskList taskList, String in) {
+        this.taskList = taskList;
+        this.in = in;
+        this.strategy = strategy;
     }
 
     public void setNewAction(ActionTaskStrategy strategy, TaskList taskList, String in) {

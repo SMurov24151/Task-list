@@ -8,9 +8,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import task.methods.ActionExecutor;
 import task.methods.impl.*;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Scanner;
 
@@ -38,9 +35,7 @@ public class Main implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        new BufferedReader(new InputStreamReader(System.in));
         logger.info("Simple log statement");
-        ActionExecutor executor = new ActionExecutor();
         while (true) {
             Scanner in = new Scanner(System.in);
             String input = in.nextLine();
@@ -54,29 +49,29 @@ public class Main implements CommandLineRunner {
             }
             switch (action) {
                 case ("add"):
-                    executor.setNewAction(addAction, taskList, arrString[1]);
+                    ActionExecutor executor = new ActionExecutor(new AddAction(), taskList, arrString[1]);
                     executor.runTask();
                     break;
                 case ("print"):
-                    executor.setNewAction(printAction, taskList, input);
+                    executor = new ActionExecutor(new PrintAction(), taskList, input);
                     executor.runTask();
                     break;
                 case ("toggle"):
-                    executor.setNewAction(toggleAction, taskList, arrString[1]);
+                    executor = new ActionExecutor(new ToggleAction(), taskList, arrString[1]);
                     executor.runTask();
                     break;
                 case ("quit"):
                     exit(0);
                 case ("delete"):
-                    executor.setNewAction(deleteAction, taskList, arrString[1]);
+                    executor = new ActionExecutor(new DeleteAction(), taskList, arrString[1]);
                     executor.runTask();
                     break;
                 case ("edit"):
-                    executor.setNewAction(editAction, taskList, arrString[1]);
+                    executor = new ActionExecutor(new EditAction(), taskList, arrString[1]);
                     executor.runTask();
                     break;
                 case ("search"):
-                    executor.setNewAction(searchAction, taskList, arrString[1]);
+                    executor = new ActionExecutor(new SearchAction(), taskList, arrString[1]);
                     executor.runTask();
                     break;
                 default:
