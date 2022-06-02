@@ -6,8 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import task.methods.ActionExecutor;
-import task.methods.impl.*;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,23 +15,17 @@ import static java.lang.System.exit;
 
 @SpringBootApplication
 @RequiredArgsConstructor
+@EntityScan(basePackages = {"task"})
 public class Main implements CommandLineRunner {
     static TaskList taskList = TaskList.getInstance();
     public static int nextIndexTask = 1;
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
     private static List<String> ACTION_WITH_REQUIRED_ARG = List.of("add", "toggle", "delete", "edit", "search");
-
-
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
     }
 
-    private final AddAction addAction;
-    private final DeleteAction deleteAction;
-    private final EditAction editAction;
-    private final PrintAction printAction;
-    private final SearchAction searchAction;
-    private final ToggleAction toggleAction;
+    private final ActionExecutor executor;
 
     @Override
     public void run(String... args) {
@@ -49,30 +43,24 @@ public class Main implements CommandLineRunner {
             }
             switch (action) {
                 case ("add"):
-                    ActionExecutor executor = new ActionExecutor(new AddAction(), taskList, arrString[1]);
-                    executor.runTask();
+                    executor.addOperation(taskList, arrString[1]);
                     break;
                 case ("print"):
-                    executor = new ActionExecutor(new PrintAction(), taskList, input);
-                    executor.runTask();
+                    executor.printOperation(taskList, input);
                     break;
                 case ("toggle"):
-                    executor = new ActionExecutor(new ToggleAction(), taskList, arrString[1]);
-                    executor.runTask();
+                    executor.toggleOperation(taskList, arrString[1]);
                     break;
                 case ("quit"):
                     exit(0);
                 case ("delete"):
-                    executor = new ActionExecutor(new DeleteAction(), taskList, arrString[1]);
-                    executor.runTask();
+                    executor.deleteOperation(taskList, arrString[1]);
                     break;
                 case ("edit"):
-                    executor = new ActionExecutor(new EditAction(), taskList, arrString[1]);
-                    executor.runTask();
+                    executor.editOperation(taskList, arrString[1]);
                     break;
                 case ("search"):
-                    executor = new ActionExecutor(new SearchAction(), taskList, arrString[1]);
-                    executor.runTask();
+                    executor.searchOperation(taskList, arrString[1]);
                     break;
                 default:
                     System.out.println("Введенная команда не поддерживается\n");
