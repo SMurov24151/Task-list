@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import task.TaskList;
 import task.methods.impl.*;
+import java.util.HashMap;
+import java.util.Map;
+
+import static java.lang.System.exit;
 
 @Service
 public class ActionExecutor {
 
-    private TaskList taskList;
-    private String in;
     private ActionTaskStrategy strategy;
 
     @Autowired
@@ -25,43 +27,26 @@ public class ActionExecutor {
     @Autowired
     private ToggleAction toggleAction;
 
-    public void runTask() {
-        this.strategy.execute(taskList, in);
+    public Map<String, ActionTaskStrategy> strategyByAction() {
+        Map<String, ActionTaskStrategy> result = new HashMap<>();
+
+        result.put("add", addAction);
+        result.put("delete", deleteAction);
+        result.put("edit", editAction);
+        result.put("print", printAction);
+        result.put("search", searchAction);
+        result.put("toggle", toggleAction);
+
+        return result;
     }
 
-    public void addOperation(TaskList taskList, String param) {
-        setNewAction(addAction, taskList, param);
-        runTask();
-    }
-
-    public void printOperation(TaskList taskList, String param) {
-        setNewAction(printAction, taskList, param);
-        runTask();
-    }
-
-    public void toggleOperation(TaskList taskList, String param) {
-        setNewAction(toggleAction, taskList, param);
-        runTask();
-    }
-
-    public void editOperation(TaskList taskList, String param) {
-        setNewAction(editAction, taskList, param);
-        runTask();
-    }
-
-    public void deleteOperation(TaskList taskList, String param) {
-        setNewAction(deleteAction, taskList, param);
-        runTask();
-    }
-
-    public void searchOperation(TaskList taskList, String param) {
-        setNewAction(searchAction, taskList, param);
-        runTask();
-    }
-
-    public void setNewAction(ActionTaskStrategy strategy, TaskList taskList, String in) {
-        this.strategy = strategy;
-        this.taskList = taskList;
-        this.in = in;
+    public void runTask(String actionName, TaskList taskList, String args) {
+        if (actionName.equals("quit")) exit(0);
+        strategy = strategyByAction().get(actionName);
+        if (strategy == null) {
+            System.out.println("Введенная команда не поддерживается\n");
+            return;
+        }
+        this.strategy.execute(taskList, args);
     }
 }

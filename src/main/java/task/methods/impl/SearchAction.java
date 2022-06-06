@@ -9,7 +9,8 @@ import task.methods.ActionTaskStrategy;
 public class SearchAction implements ActionTaskStrategy {
     @Override
     public void execute(TaskList taskList, String in) {
-        String substring = in;
+        String[] arrString = in.split(" ", 2);
+        String substring = arrString[1];;
         if (substring.length() == 0) {
             System.out.println("Введите слово");
             return;

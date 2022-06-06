@@ -11,8 +11,6 @@ import task.methods.ActionExecutor;
 import java.util.List;
 import java.util.Scanner;
 
-import static java.lang.System.exit;
-
 @SpringBootApplication
 @RequiredArgsConstructor
 @EntityScan(basePackages = {"task"})
@@ -41,30 +39,7 @@ public class Main implements CommandLineRunner {
                 logger.error("Undefined args");
                 continue;
             }
-            switch (action) {
-                case ("add"):
-                    executor.addOperation(taskList, arrString[1]);
-                    break;
-                case ("print"):
-                    executor.printOperation(taskList, input);
-                    break;
-                case ("toggle"):
-                    executor.toggleOperation(taskList, arrString[1]);
-                    break;
-                case ("quit"):
-                    exit(0);
-                case ("delete"):
-                    executor.deleteOperation(taskList, arrString[1]);
-                    break;
-                case ("edit"):
-                    executor.editOperation(taskList, arrString[1]);
-                    break;
-                case ("search"):
-                    executor.searchOperation(taskList, arrString[1]);
-                    break;
-                default:
-                    System.out.println("Введенная команда не поддерживается\n");
-            }
+            executor.runTask(action, taskList, input);
         }
     }
     public static int findElement(String in) {
